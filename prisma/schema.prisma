@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+model author {
+  id                Int            @id @default(autoincrement())
+  author_name     String         @unique @db.VarChar(100)
+  nick_name       String?
+  del_flg         Boolean             @default(false)         
+  createdAt       DateTime             @default(now())   
+  updatedAt       DateTime             @updatedAt
+  albums albums[]
+}
+model albums {
+  id                Int            @id @default(autoincrement())
+  album_name     String         @unique @db.VarChar(225)
+  description     String?
+  author       author @relation(fields:[authorId] ,references: [id]) 
+authorId            Int              
+   del_flg         Boolean             @default(false)         
+  createdAt       DateTime             @default(now())   
+  updatedAt       DateTime             @updatedAt
+  songs songs[]
+}
+model songs {
+  id                Int            @id @default(autoincrement())
+  song_name     String         @unique @db.VarChar(225)
+  description     String?
+    album       albums @relation(fields:[albumId] ,references: [id]) 
+  albumId       Int
+   del_flg         Boolean             @default(false)         
+  createdAt       DateTime             @default(now())   
+  updatedAt       DateTime             @updatedAt
+}
+
