@@ -15,11 +15,7 @@ const create = (async(req,res,next)=>{
     
     // // //getting  all the authours
     const getall = async(req,res,next)=>{
-        const id = parseInt(req.params.id);
     const authors = await prisma.author.findMany({
-      where: {
-        id,
-      },
         include:{
             albums: {
                 include:{
@@ -84,29 +80,29 @@ const create = (async(req,res,next)=>{
           where: {
             id,
           },
-          include: {
-            albums: {
-              include: {
-                songs: true,
-              },
-            },
-          },
+          // include: {
+          //   albums: {
+          //     include: {
+          //       songs: true,
+          //     },
+          //   },
+          // },
         });
     
         if (!author) {
           return res.status(404).json({ error: 'Author not found' });
         }
     
-        // Delete songs related to albums
+        
         const songDeletionPromises = author.albums.map((album) =>
           prisma.songs.deleteMany({ where: { albumId: album.id } })
         );
         await Promise.all(songDeletionPromises);
     
-        // Delete albums related to the author
+      
         await prisma.albums.deleteMany({ where: { authorId: id } });
     
-        // Delete the author
+    
         await prisma.author.delete({ where: { id } });
     
         res.status(500).json({ error: 'Failed to delete author and its constraints' });

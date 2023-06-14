@@ -28,14 +28,14 @@ CREATE TABLE `albums` (
 -- CreateTable
 CREATE TABLE `songs` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `album_name` VARCHAR(225) NOT NULL,
+    `song_name` VARCHAR(225) NOT NULL,
     `description` VARCHAR(191) NULL,
     `albumId` INTEGER NOT NULL,
     `del_flg` BOOLEAN NOT NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `songs_album_name_key`(`album_name`),
+    UNIQUE INDEX `songs_song_name_key`(`song_name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

@@ -5,13 +5,16 @@ const bodyParser = require('body-parser');
 const PORT =8080;
 const authorRoutes =require('./routes/authors');
 const albumRoutes =require('./routes/albums');
+const songRoutes = require('./routes/songs');
 const prisma = new PrismaClient();
 
 app.use(bodyParser.json());
-
+// author routes
 app.use(authorRoutes);
-//author post
+// album routes
 app.use(albumRoutes);
+//song routes
+app.use(songRoutes);
 
 app.patch('/album/:id',async(req,res,next)=>{
 const id = parseInt(req.params.id);
@@ -30,8 +33,45 @@ const id = parseInt(req.params.id);
 
 
 })
-app.delete('/album/:id',(req,res,next)=>{
+app.get('/albums',async(req,res,next)=>{
+    const albums = await prisma.albums.findMany({
+        include:{
+            author: {
+                include:{
+                    albums:{
+                         include:{
+                  songs: true
+                },
+                    }
+                }
+               
+            },
+        },
+    });
+    res.status(200).json({
+        albums
+    })
+    
+    
+    })
 
+app.delete('/album/:id',async(req,res,next)=>{
+    const id = parseInt(req.params.id);
+    const albums = await prisma.albums.findMany({
+      where: {
+        id,
+      },
+        include:{
+            albums: {
+                include:{
+                  songs: true
+                },
+            },
+        },
+    });
+    res.status(200).json({
+        albums
+    })
 
 })
 
