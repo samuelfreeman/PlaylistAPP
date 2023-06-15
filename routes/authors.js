@@ -12,7 +12,6 @@ router.get('/author/:id', authors.getSingle);
 
 router.delete('/author/:id', authors.remove);
 
-
 router.patch('/author/:id', authors.patch);
 
 module.exports = router;
