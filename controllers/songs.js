@@ -1,4 +1,4 @@
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
@@ -131,7 +131,6 @@ const remove = async (req, res, next) => {
     where: {
       id,
     },
-  
   });
   res.status(200).json({
     song,
@@ -145,5 +144,5 @@ module.exports = {
   getSingleAlbumId,
   getSongAlbum2,
   patch,
-  remove
+  remove,
 };

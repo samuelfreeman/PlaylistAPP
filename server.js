@@ -1,12 +1,23 @@
-const express = require("express");
+const express = require('express');
+
 const app = express();
-const { PrismaClient } = require("@prisma/client");
-const bodyParser = require("body-parser");
+
+const { PrismaClient } = require('@prisma/client');
+
+const bodyParser = require('body-parser');
+
 const PORT = 8080;
-const authorRoutes = require("./routes/authors");
-const albumRoutes = require("./routes/albums");
-const songRoutes = require("./routes/songs");
+const authorRoutes = require('./routes/authors');
+
+const albumRoutes = require('./routes/albums');
+
+const songRoutes = require('./routes/songs');
+
 const prisma = new PrismaClient();
+
+const cors = require('cors');
+
+app.use(cors({ origin: true, credentials: true }));
 
 app.use(bodyParser.json());
 // author routes
@@ -15,8 +26,7 @@ app.use(authorRoutes);
 app.use(albumRoutes);
 //song routes
 app.use(songRoutes);
-
-app.patch("/album/:id", async (req, res, next) => {
+app.patch('/album/:id', async (req, res, next) => {
   const id = parseInt(req.params.id);
   const data = req.body;
   const albums = await prisma.albums.update({
@@ -30,7 +40,7 @@ app.patch("/album/:id", async (req, res, next) => {
     albums,
   });
 });
-app.get("/albums", async (req, res, next) => {
+app.get('/albums', async (req, res, next) => {
   const albums = await prisma.albums.findMany({
     include: {
       author: {
@@ -49,7 +59,7 @@ app.get("/albums", async (req, res, next) => {
   });
 });
 
-app.delete("/album/:id", async (req, res, next) => {
+app.delete('/album/:id', async (req, res, next) => {
   const id = parseInt(req.params.id);
   const albums = await prisma.albums.findMany({
     where: {
@@ -69,7 +79,7 @@ app.delete("/album/:id", async (req, res, next) => {
 });
 
 // //songs
-app.post("/songs", async (req, res, next) => {
+app.post('/songs', async (req, res, next) => {
   const data = req.body;
   const song = await prisma.songs.create({
     data,

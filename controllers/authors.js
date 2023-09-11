@@ -10,7 +10,7 @@ const create = async (req, res, next) => {
     author,
   });
 };
-
+//Local instance MySQL80
 // // //getting  all the authours
 const getall = async (req, res, next) => {
   const authors = await prisma.author.findMany({
@@ -49,10 +49,12 @@ const getSingle = async (req, res, next) => {
 // // //patch
 const patch = async (req, res, next) => {
   const id = parseInt(req.params.id);
+  
   const data = req.body;
   const author = await prisma.author.update({
     where: {
       id,
+      
     },
 
     data,

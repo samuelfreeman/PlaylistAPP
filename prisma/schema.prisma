@@ -11,34 +11,34 @@ datasource db {
 }
 
 model author {
-  id                Int            @id @default(autoincrement())
-
-  author_name     String         @unique @db.VarChar(100)
-  nick_name       String?
-  del_flg         Boolean             @default(false)         
-  createdAt       DateTime             @default(now())   
-  updatedAt       DateTime             @updatedAt
-  albums albums[]
+  id          Int      @id @default(autoincrement())
+  author_name String   @unique @db.VarChar(100)
+  nick_name   String?
+  del_flg     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  oupdatedAt  DateTime @updatedAt
+  albums      albums[]
 }
+
 model albums {
-  id                Int            @id @default(autoincrement())
-  album_name     String         @unique @db.VarChar(225)
-  description     String?
-  author       author @relation(fields:[authorId] ,references: [id]) 
-authorId            Int              
-   del_flg         Boolean             @default(false)         
-  createdAt       DateTime             @default(now())   
-  updatedAt       DateTime             @updatedAt
-  songs songs[]
-}
-model songs {
-  id                Int            @id @default(autoincrement())
-  song_name     String         @unique @db.VarChar(225)
-  description     String?
-    album       albums @relation(fields:[albumId] ,references: [id]) 
-  albumId       Int
-   del_flg         Boolean             @default(false)         
-  createdAt       DateTime             @default(now())   
-  updatedAt       DateTime             @updatedAt
+  id          Int      @id @default(autoincrement())
+  album_name  String   @unique @db.VarChar(225)
+  description String?
+  author      author   @relation(fields: [authorId], references: [id])
+  authorId    Int
+  del_flg     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  songs       songs[]
 }
 
+model songs {
+  id          Int      @id @default(autoincrement())
+  song_name   String   @unique @db.VarChar(225)
+  description String?
+  album       albums   @relation(fields: [albumId], references: [id])
+  albumId     Int
+  del_flg     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
